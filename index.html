@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>WebXR Test</title>
+
+<script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+
+<script>
+AFRAME.registerComponent('toggle-button', {
+  init: function () {
+    this.toggled = false;
+
+    this.el.addEventListener('click', () => {
+      this.toggled = !this.toggled;
+
+      this.el.setAttribute(
+        'color',
+        this.toggled ? '#FF0000' : '#00FFAA'
+      );
+    });
+  }
+});
+</script>
+
+<style>
+body { margin:0; }
+</style>
+</head>
+
+<body>
+
+<a-scene
+  renderer="colorManagement:true"
+  xr-mode-ui="enabled: true"
+  webxr="optionalFeatures: hit-test, local-floor"
+>
+
+  <!-- 360 PANORAMA (VR MODE) -->
+  <a-sky src="assets/panorama.jpg"></a-sky>
+
+  <!-- CAMERA + CURSOR -->
+  <a-entity camera look-controls position="0 1.6 0">
+    <a-cursor
+      fuse="false"
+      raycaster="objects: .clickable"
+    ></a-cursor>
+  </a-entity>
+
+  <!-- FLOATING UI ROOT -->
+  <a-entity id="uiRoot" position="0 1.6 -2">
+
+      <!-- FLOATING IMAGE -->
+      <a-plane
+        src="assets/floating-image.png"
+        width="1.2"
+        height="0.7"
+        position="0 0.3 0"
+      ></a-plane>
+
+      <!-- BUTTON -->
+      <a-box
+        class="clickable"
+        toggle-button
+        color="#00FFAA"
+        depth="0.1"
+        height="0.3"
+        width="0.6"
+        position="0 -0.4 0"
+      ></a-box>
+
+  </a-entity>
+
+</a-scene>
+
+</body>
+</html>
